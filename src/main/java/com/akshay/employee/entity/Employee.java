@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "employee", schema = "employee_hierarchy_system")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

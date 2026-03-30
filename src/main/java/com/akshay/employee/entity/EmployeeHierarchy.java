@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "employee_hierarchy")
+@Table(name = "employee_hierarchy", schema = "employee_hierarchy_system")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

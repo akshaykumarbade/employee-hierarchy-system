@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "role")
+@Table(name = "role", schema = "employee_hierarchy_system")
 public class Role implements Serializable {
 
     @Id

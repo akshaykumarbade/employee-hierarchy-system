@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Entity
-@Table(name = "employee_role")
+@Table(name = "employee_role", schema = "employee_hierarchy_system")
 @Data
 @IdClass(EmployeeRoleId.class)
 public class EmployeeRole {
