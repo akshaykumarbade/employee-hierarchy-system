@@ -49,11 +49,19 @@ public class EmployeeService {
         return saved;
     }
 
-    public List<Employee> getSubordinates(UUID managerId) {
+    public List<Employee> getSubordinates(Long managerId) {
         return hierarchyRepository.findSubordinates(managerId);
     }
 
     public List<Employee> search(String name) {
         return employeeRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
+
+    public List<Employee> getDirectSubordinates(Long managerId) {
+        return hierarchyRepository.findDirectSubordinates(managerId);
     }
 }

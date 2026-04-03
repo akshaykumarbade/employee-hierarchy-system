@@ -10,6 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EmployeeHierarchyId implements Serializable {
 
-    private UUID ancestorId;
-    private UUID descendantId;
+    private Long ancestorId;
+    private Long descendantId;
 }

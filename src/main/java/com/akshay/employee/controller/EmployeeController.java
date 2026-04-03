@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}/subordinates")
-    public ResponseEntity<List<Employee>> getSubordinates(@PathVariable UUID id) {
+    public ResponseEntity<List<Employee>> getSubordinates(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.getSubordinates(id));
     }
 }

@@ -12,6 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EmployeeRoleId implements Serializable {
 
-    private UUID employeeId;
+    private Long employeeId;
     private UUID roleId;
 }

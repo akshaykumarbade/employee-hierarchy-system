@@ -22,10 +22,10 @@ import java.util.UUID;
 public class EmployeeHierarchy implements Serializable {
 
     @Id
-    private UUID ancestorId;
+    private Long ancestorId;
 
     @Id
-    private UUID descendantId;
+    private Long descendantId;
 
     private int depth;
 }

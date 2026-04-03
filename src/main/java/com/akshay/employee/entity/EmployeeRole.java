@@ -15,7 +15,7 @@ import java.util.UUID;
 public class EmployeeRole {
 
     @Id
-    private UUID employeeId;
+    private Long employeeId;
 
     @Id
     private UUID roleId;
