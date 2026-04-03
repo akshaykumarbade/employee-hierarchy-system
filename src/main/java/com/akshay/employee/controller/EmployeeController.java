@@ -29,4 +29,9 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getSubordinates(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.getSubordinates(id));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
 }
