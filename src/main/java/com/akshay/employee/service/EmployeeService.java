@@ -1,13 +1,12 @@
 package com.akshay.employee.service;
 
-import com.akshay.employee.entity.Employee;
-import com.akshay.employee.entity.EmployeeHierarchy;
-import com.akshay.employee.repository.EmployeeHierarchyRepository;
-import com.akshay.employee.repository.EmployeeRepository;
+import com.akshay.employee.entity.*;
+import com.akshay.employee.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +15,9 @@ import java.util.UUID;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
+    private final EmployeeRoleRepository employeeRoleRepository;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
 
     public Employee createEmployee(Employee employee) {
 
@@ -63,5 +65,15 @@ public class EmployeeService {
 
     public List<Employee> getDirectSubordinates(Long managerId) {
         return hierarchyRepository.findDirectSubordinates(managerId);
+    }
+
+    public List<Employee> getAllEmployeesForAdminOnly(Long adminId, UUID roleId, UUID permissionId) {
+        String roleName = roleRepository.getRole(roleId).getName();
+        String permissionName = permissionRepository.getPermission(permissionId).getName();
+        List<Employee> allEmployees = new ArrayList<>();
+        if(roleName.equalsIgnoreCase("Admin") && permissionName.equalsIgnoreCase("ALL")) {
+            allEmployees = employeeRepository.findAll();
+        }
+        return allEmployees;
     }
 }
