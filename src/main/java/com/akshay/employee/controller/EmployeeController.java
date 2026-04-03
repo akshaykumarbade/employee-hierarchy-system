@@ -34,4 +34,9 @@ public class EmployeeController {
     public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
+
+    @GetMapping("/allEmployees")
+    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId, @RequestParam UUID roleId, @RequestParam UUID permissionId) {
+        return ResponseEntity.ok(employeeService.)
+    }
 }
