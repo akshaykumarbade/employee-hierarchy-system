@@ -35,8 +35,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-    @GetMapping("/allEmployees")
-    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId, @RequestParam UUID roleId, @RequestParam UUID permissionId) {
-        return ResponseEntity.ok(employeeService.)
-    }
+//    @GetMapping("/allEmployees")
+//    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId) {
+//        return ResponseEntity.ok(employeeService.)
+//    }
 }
