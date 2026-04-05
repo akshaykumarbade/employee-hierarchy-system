@@ -3,8 +3,10 @@ package com.akshay.employee.controller;
 import com.akshay.employee.entity.Employee;
 import com.akshay.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,8 +37,12 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
-//    @GetMapping("/allEmployees")
-//    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId) {
-//        return ResponseEntity.ok(employeeService.)
-//    }
+    @GetMapping("/allEmployees")
+    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId) {
+        List<Employee> allEmployees = employeeService.getAllEmployeesForAdminOnly(employeeId);
+        if(allEmployees.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "access denied");
+        }
+        return ResponseEntity.ok(employeeService.getAllEmployeesForAdminOnly(employeeId));
+    }
 }

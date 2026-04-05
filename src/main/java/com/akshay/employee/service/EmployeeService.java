@@ -21,6 +21,8 @@ public class EmployeeService {
 
     public Employee createEmployee(Employee employee) {
 
+
+
         Employee saved = employeeRepository.save(employee);
         employee.setCreatedAt(LocalDateTime.now());
         employee.setUpdatedAt(LocalDateTime.now());
@@ -67,11 +69,15 @@ public class EmployeeService {
         return hierarchyRepository.findDirectSubordinates(managerId);
     }
 
-    public List<Employee> getAllEmployeesForAdminOnly(Long adminId, UUID roleId, UUID permissionId) {
-        String roleName = roleRepository.getRole(roleId).getName();
-        String permissionName = permissionRepository.getPermission(permissionId).getName();
+    public List<Employee> getAllEmployeesForAdminOnly(Long adminId) {
+        EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
+        UUID roleId = employeeRole.getRoleId();
+        Role role = roleRepository.getRole(roleId);
+        String roleName = role.getName();
+        String permission = permissionRepository.getPermission(role.getPermissionId()).getName();
+
         List<Employee> allEmployees = new ArrayList<>();
-        if(roleName.equalsIgnoreCase("Admin") && permissionName.equalsIgnoreCase("ALL")) {
+        if(roleName.equalsIgnoreCase("Admin") && permission.equalsIgnoreCase("ALL")) {
             allEmployees = employeeRepository.findAll();
         }
         return allEmployees;

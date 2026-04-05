@@ -23,6 +23,8 @@ public class Role implements Serializable {
 
     private String name;
 
+    private UUID permissionId;
+
     public UUID getId() {
         return id;
     }
@@ -37,5 +39,13 @@ public class Role implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public UUID getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(UUID permissionId) {
+        this.permissionId = permissionId;
     }
 }
