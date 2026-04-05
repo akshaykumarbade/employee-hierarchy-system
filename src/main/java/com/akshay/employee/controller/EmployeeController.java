@@ -1,6 +1,7 @@
 package com.akshay.employee.controller;
 
 import com.akshay.employee.entity.Employee;
+import com.akshay.employee.entity.Role;
 import com.akshay.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,14 +36,5 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getEmployee(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
-    }
-
-    @GetMapping("/allEmployees")
-    public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId) {
-        List<Employee> allEmployees = employeeService.getAllEmployeesForAdminOnly(employeeId);
-        if(allEmployees.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "access denied");
-        }
-        return ResponseEntity.ok(employeeService.getAllEmployeesForAdminOnly(employeeId));
     }
 }

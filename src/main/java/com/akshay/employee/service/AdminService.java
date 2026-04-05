@@ -1,6 +1,9 @@
 package com.akshay.employee.service;
 
-import com.akshay.employee.entity.*;
+import com.akshay.employee.entity.Employee;
+import com.akshay.employee.entity.EmployeeHierarchy;
+import com.akshay.employee.entity.EmployeeRole;
+import com.akshay.employee.entity.Role;
 import com.akshay.employee.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,8 +15,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeService {
+public class AdminService {
+
     private final EmployeeRepository employeeRepository;
+    private final EmployeeRoleRepository employeeRoleRepository;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
 
     public Employee createEmployee(Employee employee) {
@@ -50,22 +57,17 @@ public class EmployeeService {
         return saved;
     }
 
-    public List<Employee> getSubordinates(Long managerId) {
-        return hierarchyRepository.findSubordinates(managerId);
+    public List<Employee> getAllEmployeesForAdminOnly(Long adminId) {
+        EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
+        UUID roleId = employeeRole.getRoleId();
+        Role role = roleRepository.getRole(roleId);
+        String roleName = role.getName();
+        String permission = permissionRepository.getPermission(role.getPermissionId()).getName();
+
+        List<Employee> allEmployees = new ArrayList<>();
+        if(roleName.equalsIgnoreCase("Admin") && permission.equalsIgnoreCase("ALL")) {
+            allEmployees = employeeRepository.findAll();
+        }
+        return allEmployees;
     }
-
-    public List<Employee> search(String name) {
-        return employeeRepository.findByNameContainingIgnoreCase(name);
-    }
-
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
-    }
-
-    public List<Employee> getDirectSubordinates(Long managerId) {
-        return hierarchyRepository.findDirectSubordinates(managerId);
-    }
-
-
-
 }
