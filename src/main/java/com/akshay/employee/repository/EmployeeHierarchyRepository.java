@@ -26,4 +26,10 @@ public interface EmployeeHierarchyRepository extends JpaRepository<EmployeeHiera
         WHERE h.ancestorId = :managerId AND h.depth = 1
     """)
     List<Employee> findDirectSubordinates(Long employeeId);
+
+    @Query("""
+            SELECT h FROM EmployeeHierarchy h
+            WHERE h.descendantId = : employeeId AND h.depth = 1
+            """)
+    EmployeeHierarchy getEmployeeHierarchy(Long employeeId);
 }

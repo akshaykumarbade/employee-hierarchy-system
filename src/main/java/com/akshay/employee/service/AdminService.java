@@ -1,5 +1,6 @@
 package com.akshay.employee.service;
 
+import com.akshay.employee.dto.EmployeeDTO;
 import com.akshay.employee.entity.Employee;
 import com.akshay.employee.entity.EmployeeHierarchy;
 import com.akshay.employee.entity.EmployeeRole;
@@ -23,39 +24,45 @@ public class AdminService {
     private final PermissionRepository permissionRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
 
-    public Employee createEmployee(Employee employee) {
+//    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
+//        String managerName = employeeDTO.getManager();
+//        List<Employee> managerId = employeeRepository.findByNameContainingIgnoreCase(managerName);
+//        Employee employee = Employee.builder()
+//                .name(employeeDTO.getName())
+//                .email(employeeDTO.getEmail())
+//                .managerId(employeeDTO.getManager())
+//                .build();
 
 
-
-        Employee saved = employeeRepository.save(employee);
-        employee.setCreatedAt(LocalDateTime.now());
-        employee.setUpdatedAt(LocalDateTime.now());
+//        Employee saved = employeeRepository.save(employee);
+//        employee.setCreatedAt(LocalDateTime.now());
+//        employee.setUpdatedAt(LocalDateTime.now());
 
         // 1. Self reference
-        hierarchyRepository.save(
-                new EmployeeHierarchy(saved.getId(), saved.getId(), 0)
-        );
-
-        // 2. If manager exists → inherit hierarchy
-        if (employee.getManagerId() != null) {
-            List<EmployeeHierarchy> managerHierarchy =
-                    hierarchyRepository.findAll().stream()
-                            .filter(h -> h.getDescendantId().equals(employee.getManagerId()))
-                            .toList();
-
-            for (EmployeeHierarchy h : managerHierarchy) {
-                hierarchyRepository.save(
-                        new EmployeeHierarchy(
-                                h.getAncestorId(),
-                                saved.getId(),
-                                h.getDepth() + 1
-                        )
-                );
-            }
-        }
-
-        return saved;
-    }
+//        hierarchyRepository.save(
+//                new EmployeeHierarchy(saved.getId(), saved.getId(), 0)
+//        );
+//
+//        // 2. If manager exists → inherit hierarchy
+//        if (employee.getManagerId() != null) {
+//            List<EmployeeHierarchy> managerHierarchy =
+//                    hierarchyRepository.findAll().stream()
+//                            .filter(h -> h.getDescendantId().equals(employee.getManagerId()))
+//                            .toList();
+//
+//            for (EmployeeHierarchy h : managerHierarchy) {
+//                hierarchyRepository.save(
+//                        new EmployeeHierarchy(
+//                                h.getAncestorId(),
+//                                saved.getId(),
+//                                h.getDepth() + 1
+//                        )
+//                );
+//            }
+//        }
+//
+//        return saved;
+//    }
 
     public List<Employee> getAllEmployeesForAdminOnly(Long adminId) {
         EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
