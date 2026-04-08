@@ -31,8 +31,7 @@ public class Employee implements Serializable {
 
     private Long managerId;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
-    @UpdateTimestamp
+
     private LocalDateTime updatedAt;
 }

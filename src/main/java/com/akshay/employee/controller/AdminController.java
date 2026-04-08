@@ -19,7 +19,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/addEmployee")
-    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return ResponseEntity.ok(adminService.createEmployee(employeeDTO));
     }
 

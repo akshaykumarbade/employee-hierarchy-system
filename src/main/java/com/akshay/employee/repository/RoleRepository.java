@@ -18,4 +18,12 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
                     """
     )
     public Role getRole(UUID roleId);
+
+    @Query(
+            """
+                    select r from Role r
+                    where r.name = :roleName
+                    """
+    )
+    public Role getRoleByName(String roleName);
 }

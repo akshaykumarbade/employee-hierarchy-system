@@ -24,45 +24,32 @@ public class AdminService {
     private final PermissionRepository permissionRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
 
-//    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-//        String managerName = employeeDTO.getManager();
-//        List<Employee> managerId = employeeRepository.findByNameContainingIgnoreCase(managerName);
-//        Employee employee = Employee.builder()
-//                .name(employeeDTO.getName())
-//                .email(employeeDTO.getEmail())
-//                .managerId(employeeDTO.getManager())
-//                .build();
+    public Employee createEmployee(EmployeeDTO employeeDTO) {
+        Long managerId = employeeDTO.getManagerId();
+        Employee employee = Employee.builder()
+                .id(employeeDTO.getEmployeeId())
+                .name(employeeDTO.getName())
+                .email(employeeDTO.getEmail())
+                .managerId(managerId)
+                .createdAt(LocalDateTime.now())
+                .build();
 
+        employeeRepository.save(employee);
 
-//        Employee saved = employeeRepository.save(employee);
-//        employee.setCreatedAt(LocalDateTime.now());
-//        employee.setUpdatedAt(LocalDateTime.now());
-
-        // 1. Self reference
-//        hierarchyRepository.save(
-//                new EmployeeHierarchy(saved.getId(), saved.getId(), 0)
-//        );
-//
-//        // 2. If manager exists → inherit hierarchy
-//        if (employee.getManagerId() != null) {
-//            List<EmployeeHierarchy> managerHierarchy =
-//                    hierarchyRepository.findAll().stream()
-//                            .filter(h -> h.getDescendantId().equals(employee.getManagerId()))
-//                            .toList();
-//
-//            for (EmployeeHierarchy h : managerHierarchy) {
-//                hierarchyRepository.save(
-//                        new EmployeeHierarchy(
-//                                h.getAncestorId(),
-//                                saved.getId(),
-//                                h.getDepth() + 1
-//                        )
-//                );
-//            }
-//        }
-//
-//        return saved;
-//    }
+        EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
+                .ancestorId(managerId)
+                .descendantId(employeeDTO.getEmployeeId())
+                .depth(0)
+                .build();
+        hierarchyRepository.save(employeeHierarchy);
+        UUID roleId = roleRepository.getRoleByName(employeeDTO.getRole()).getId();
+        EmployeeRole employeeRole = EmployeeRole.builder()
+                .employeeId(employeeDTO.getEmployeeId())
+                .roleId(roleId)
+                .build();
+        employeeRoleRepository.save(employeeRole);
+        return employee;
+    }
 
     public List<Employee> getAllEmployeesForAdminOnly(Long adminId) {
         EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);

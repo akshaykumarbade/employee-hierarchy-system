@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "employee_role", schema = "employee_hierarchy_system")
 @Data
+@Builder
 public class EmployeeRole {
 
     @Id
