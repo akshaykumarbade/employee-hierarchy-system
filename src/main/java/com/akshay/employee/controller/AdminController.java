@@ -1,7 +1,9 @@
 package com.akshay.employee.controller;
 
 import com.akshay.employee.dto.EmployeeDTO;
+import com.akshay.employee.dto.RoleDTO;
 import com.akshay.employee.entity.Employee;
+import com.akshay.employee.entity.Role;
 import com.akshay.employee.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,11 @@ public class AdminController {
     @PostMapping("/addEmployee")
     public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return ResponseEntity.ok(adminService.createEmployee(employeeDTO));
+    }
+
+    @PostMapping("/createRole")
+    public ResponseEntity<Role> addRole(@RequestBody RoleDTO roleRequest) {
+        return ResponseEntity.ok(adminService.createRole(roleRequest));
     }
 
     @GetMapping("/allEmployees")

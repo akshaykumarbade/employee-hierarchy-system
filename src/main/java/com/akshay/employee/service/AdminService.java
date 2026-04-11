@@ -1,6 +1,7 @@
 package com.akshay.employee.service;
 
 import com.akshay.employee.dto.EmployeeDTO;
+import com.akshay.employee.dto.RoleDTO;
 import com.akshay.employee.entity.Employee;
 import com.akshay.employee.entity.EmployeeHierarchy;
 import com.akshay.employee.entity.EmployeeRole;
@@ -56,12 +57,18 @@ public class AdminService {
         UUID roleId = employeeRole.getRoleId();
         Role role = roleRepository.getRole(roleId);
         String roleName = role.getName();
-        String permission = permissionRepository.getPermission(role.getPermissionId()).getName();
+        String permission = role.getPermission();
 
         List<Employee> allEmployees = new ArrayList<>();
         if(roleName.equalsIgnoreCase("Admin") && permission.equalsIgnoreCase("ALL")) {
             allEmployees = employeeRepository.findAll();
         }
         return allEmployees;
+    }
+
+    public Role createRole(RoleDTO roleRequest) {
+        Role role = Role.builder().name(roleRequest.getName()).permission(roleRequest.getPermission()).build();
+        roleRepository.save(role);
+        return role;
     }
 }
