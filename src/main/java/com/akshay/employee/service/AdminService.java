@@ -71,4 +71,15 @@ public class AdminService {
         roleRepository.save(role);
         return role;
     }
+
+    public List<Role> getAllRolesForAdmin(Long adminId) {
+        EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
+        UUID roleId = employeeRole.getRoleId();
+        Role role = roleRepository.getRole(roleId);
+        List<Role> allRoles = new ArrayList<>();
+        if(role.getName().equalsIgnoreCase("Admin") && role.getPermission().equalsIgnoreCase("ALL")) {
+            allRoles = roleRepository.findAll();
+        }
+        return allRoles;
+    }
 }

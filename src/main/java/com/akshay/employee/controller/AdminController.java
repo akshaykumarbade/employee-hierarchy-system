@@ -30,6 +30,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.createRole(roleRequest));
     }
 
+    @GetMapping("/getRoles")
+    public ResponseEntity<List<Role>> getAllRolesForAdmin(@RequestBody Long adminId) {
+        return ResponseEntity.ok(adminService.getAllRolesForAdmin(adminId));
+    }
+
     @GetMapping("/allEmployees")
     public ResponseEntity<List<Employee>> getAllEmployee(@RequestParam Long employeeId) {
         List<Employee> allEmployees = adminService.getAllEmployeesForAdminOnly(employeeId);
