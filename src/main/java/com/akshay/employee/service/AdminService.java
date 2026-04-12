@@ -4,7 +4,6 @@ import com.akshay.employee.dto.EmployeeDTO;
 import com.akshay.employee.dto.RoleDTO;
 import com.akshay.employee.entity.Employee;
 import com.akshay.employee.entity.EmployeeHierarchy;
-import com.akshay.employee.entity.EmployeeRole;
 import com.akshay.employee.entity.Role;
 import com.akshay.employee.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -20,40 +19,35 @@ import java.util.UUID;
 public class AdminService {
 
     private final EmployeeRepository employeeRepository;
-    private final EmployeeRoleRepository employeeRoleRepository;
     private final RoleRepository roleRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
 
     public Employee createEmployee(EmployeeDTO employeeDTO) {
+        System.out.println("Employee ID from DTO: " + employeeDTO.getEmployeeId());
         Long managerId = employeeDTO.getManagerId();
+        UUID roleId = roleRepository.getRoleByName(employeeDTO.getRole()).getId();
         Employee employee = Employee.builder()
                 .id(employeeDTO.getEmployeeId())
                 .name(employeeDTO.getName())
                 .email(employeeDTO.getEmail())
                 .managerId(managerId)
+                .roleId(roleId)
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        employeeRepository.save(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
 
         EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
                 .ancestorId(managerId)
-                .descendantId(employeeDTO.getEmployeeId())
+                .descendantId(savedEmployee.getId())
                 .depth(0)
                 .build();
         hierarchyRepository.save(employeeHierarchy);
-        UUID roleId = roleRepository.getRoleByName(employeeDTO.getRole()).getId();
-        EmployeeRole employeeRole = EmployeeRole.builder()
-                .employeeId(employeeDTO.getEmployeeId())
-                .roleId(roleId)
-                .build();
-        employeeRoleRepository.save(employeeRole);
         return employee;
     }
 
     public List<Employee> getAllEmployeesForAdminOnly(Long adminId) {
-        EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
-        UUID roleId = employeeRole.getRoleId();
+        UUID roleId = employeeRepository.getEmployee(adminId).getRoleId();
         Role role = roleRepository.getRole(roleId);
         String roleName = role.getName();
         String permission = role.getPermission();
@@ -72,8 +66,8 @@ public class AdminService {
     }
 
     public List<Role> getAllRolesForAdmin(Long adminId) {
-        EmployeeRole employeeRole = employeeRoleRepository.getEmployeeRole(adminId);
-        UUID roleId = employeeRole.getRoleId();
+
+        UUID roleId = employeeRepository.getEmployee(adminId).getRoleId();
         Role role = roleRepository.getRole(roleId);
         List<Role> allRoles = new ArrayList<>();
         if(role.getName().equalsIgnoreCase("Admin") && role.getPermission().equalsIgnoreCase("ALL")) {

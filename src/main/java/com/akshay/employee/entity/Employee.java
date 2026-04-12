@@ -31,6 +31,8 @@ public class Employee implements Serializable {
 
     private Long managerId;
 
+    private UUID roleId;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
