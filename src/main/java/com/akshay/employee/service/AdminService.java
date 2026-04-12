@@ -22,7 +22,6 @@ public class AdminService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeRoleRepository employeeRoleRepository;
     private final RoleRepository roleRepository;
-    private final PermissionRepository permissionRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
 
     public Employee createEmployee(EmployeeDTO employeeDTO) {
