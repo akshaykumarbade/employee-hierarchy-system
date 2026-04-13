@@ -24,6 +24,10 @@ public class AdminController {
     public ResponseEntity<Employee> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         return ResponseEntity.ok(adminService.createEmployee(employeeDTO));
     }
+    @PutMapping("/updateEmployee")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return ResponseEntity.ok(adminService.updateEmployee(employeeDTO));
+    }
 
     @PostMapping("/createRole")
     public ResponseEntity<Role> addRole(@RequestBody RoleDTO roleRequest) {

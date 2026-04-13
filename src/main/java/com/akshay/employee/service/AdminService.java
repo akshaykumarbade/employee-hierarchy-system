@@ -7,6 +7,9 @@ import com.akshay.employee.entity.EmployeeHierarchy;
 import com.akshay.employee.entity.Role;
 import com.akshay.employee.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +21,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AdminService {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(AdminService.class);
+
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
@@ -27,6 +32,36 @@ public class AdminService {
         Long managerId = employeeDTO.getManagerId();
         UUID roleId = roleRepository.getRoleByName(employeeDTO.getRole()).getId();
         Employee employee = Employee.builder()
+                .id(employeeDTO.getEmployeeId())
+                .name(employeeDTO.getName())
+                .email(employeeDTO.getEmail())
+                .managerId(managerId)
+                .roleId(roleId)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        Employee savedEmployee = employeeRepository.save(employee);
+
+        EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
+                .ancestorId(managerId)
+                .descendantId(savedEmployee.getId())
+                .depth(managerId != null ? 1 : 0)
+                .build();
+        hierarchyRepository.save(employeeHierarchy);
+        return employee;
+    }
+
+    public Employee updateEmployee(EmployeeDTO employeeDTO) {
+        Long employeeId = employeeDTO.getEmployeeId();
+        Employee employee;
+        try {
+            employee = employeeRepository.getEmployee(employeeId);
+        } catch (ResourceNotFoundException e) {
+            LOGGER.error("Employee {} not found", employeeDTO.getName());
+        }
+        Long managerId = employeeDTO.getManagerId();
+        UUID roleId = roleRepository.getRoleByName(employeeDTO.getRole()).getId();
+        employee = Employee.builder()
                 .id(employeeDTO.getEmployeeId())
                 .name(employeeDTO.getName())
                 .email(employeeDTO.getEmail())
