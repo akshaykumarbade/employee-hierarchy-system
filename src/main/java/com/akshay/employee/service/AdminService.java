@@ -40,7 +40,7 @@ public class AdminService {
         EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
                 .ancestorId(managerId)
                 .descendantId(savedEmployee.getId())
-                .depth(0)
+                .depth(managerId != null ? 1 : 0)
                 .build();
         hierarchyRepository.save(employeeHierarchy);
         return employee;
