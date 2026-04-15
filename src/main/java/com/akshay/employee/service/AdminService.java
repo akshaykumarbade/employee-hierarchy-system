@@ -114,4 +114,11 @@ public class AdminService {
     public List<Employee> getAllSubordinates(Long employeeId) {
         return hierarchyRepository.findSubordinates(employeeId);
     }
+
+    public Employee deleteEmployee(EmployeeDTO employeeDTO) {
+        Long employeeId = employeeDTO.getEmployeeId();
+        Employee employee = employeeRepository.getEmployee(employeeId);
+        employeeRepository.delete(employee);
+        return employee;
+    }
 }

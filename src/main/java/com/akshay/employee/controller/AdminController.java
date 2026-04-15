@@ -30,6 +30,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateEmployee(employeeDTO));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Employee> deleteEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return ResponseEntity.ok(adminService.deleteEmployee(employeeDTO));
+    }
+
     @PostMapping("/createRole")
     public ResponseEntity<Role> addRole(@RequestBody RoleDTO roleRequest) {
         return ResponseEntity.ok(adminService.createRole(roleRequest));
