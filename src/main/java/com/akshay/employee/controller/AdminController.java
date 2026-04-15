@@ -6,6 +6,7 @@ import com.akshay.employee.entity.Employee;
 import com.akshay.employee.entity.Role;
 import com.akshay.employee.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,11 @@ public class AdminController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "access denied");
         }
         return ResponseEntity.ok(adminService.getAllEmployeesForAdminOnly(employeeId));
+    }
+
+    @GetMapping("/getSubordinates")
+    public ResponseEntity<List<Employee>> getSubordinatesById(@RequestParam Long employeeId) {
+        List<Employee> subOrdinates = adminService.getAllSubordinates(employeeId);
+        return ResponseEntity.ok(subOrdinates);
     }
 }

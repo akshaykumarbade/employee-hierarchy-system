@@ -110,4 +110,8 @@ public class AdminService {
         }
         return allRoles;
     }
+
+    public List<Employee> getAllSubordinates(Long employeeId) {
+        return hierarchyRepository.findSubordinates(employeeId);
+    }
 }
