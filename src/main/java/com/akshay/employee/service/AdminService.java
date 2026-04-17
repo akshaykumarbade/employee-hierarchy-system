@@ -5,6 +5,7 @@ import com.akshay.employee.dto.RoleDTO;
 import com.akshay.employee.entity.Employee;
 import com.akshay.employee.entity.EmployeeHierarchy;
 import com.akshay.employee.entity.Role;
+import com.akshay.employee.entity.UserEntity;
 import com.akshay.employee.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
@@ -26,6 +27,7 @@ public class AdminService {
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
     private final EmployeeHierarchyRepository hierarchyRepository;
+    private final UsersRepository usersRepository;
 
     public Employee createEmployee(EmployeeDTO employeeDTO) {
         System.out.println("Employee ID from DTO: " + employeeDTO.getEmployeeId());
@@ -41,6 +43,9 @@ public class AdminService {
                 .build();
 
         Employee savedEmployee = employeeRepository.save(employee);
+
+//        UserEntity user = UserEntity.builder().username(employeeDTO.getEmail()).build();
+//        usersRepository.save(user);
 
         EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
                 .ancestorId(managerId)

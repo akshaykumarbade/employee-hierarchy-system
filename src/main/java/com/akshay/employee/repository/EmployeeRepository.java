@@ -19,4 +19,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             WHERE e.id = : id
             """)
     Employee getEmployee(Long id);
+
+    @Query("""
+            SELECT e FROM Employee e
+            WHERE e.email = :email
+            """)
+    Boolean getValidEmployee(String email);
 }
