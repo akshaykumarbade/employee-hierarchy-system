@@ -34,7 +34,7 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
 
-        UserEntity user = userService.getValidUser(loginDTO.getUsername(), loginDTO.getPassword());
+        UserEntity user = userService.getValidUser(loginDTO.getUsername());
 
         if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");

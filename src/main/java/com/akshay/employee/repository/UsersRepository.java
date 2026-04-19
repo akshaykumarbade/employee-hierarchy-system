@@ -12,4 +12,7 @@ public interface UsersRepository extends JpaRepository<UserEntity, String> {
             WHERE u.username = :username
             """)
     public UserEntity getUserByUsername(String username);
+
+    boolean existsByUsername(String username);
+
 }

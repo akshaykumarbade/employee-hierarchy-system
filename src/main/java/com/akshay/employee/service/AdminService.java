@@ -44,9 +44,6 @@ public class AdminService {
 
         Employee savedEmployee = employeeRepository.save(employee);
 
-//        UserEntity user = UserEntity.builder().username(employeeDTO.getEmail()).build();
-//        usersRepository.save(user);
-
         EmployeeHierarchy employeeHierarchy = EmployeeHierarchy.builder()
                 .ancestorId(managerId)
                 .descendantId(savedEmployee.getId())
